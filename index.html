@@ -12,11 +12,18 @@
             box-sizing: border-box;
         }
 
+        html {
+            width: 100%;
+            overflow-x: hidden; 
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #0a0a0a;
             color: #ffffff;
+            width: 100%; /* Garante que o body não exceda o html */
             overflow-x: hidden; 
+            position: relative; /* Adicionado para melhor controle de overflow com elementos posicionados */
         }
 
         .header {
@@ -135,7 +142,8 @@
         .category-section {
             display: none;
             padding: 40px clamp(10px, 3vw, 20px); 
-            max-width: 1600px;
+            max-width: 1600px; /* Max width for the content area */
+            width: 100%; /* Ensure it doesn't go beyond body width */
             margin: 0 auto;
             animation: fadeIn 0.8s ease-out;
         }
@@ -859,7 +867,7 @@
         function redirectToWhatsApp() {
             if (selectedFunnelName && selectedFunnelCategory) {
                 const meuNumeroWhatsapp = "5511977506530";
-                const mensagem = `Aoba, nobre! Então vamos colocar pra frente o "${selectedFunnelName}" da categoria "${selectedFunnelCategory}".`;
+                const mensagem = `Aoba, nobre! Então vamos jogar pra frente o "${selectedFunnelName}" da categoria "${selectedFunnelCategory}".`;
                 const whatsappLink = `https://api.whatsapp.com/send?phone=${meuNumeroWhatsapp}&text=${encodeURIComponent(mensagem)}`;
                 
                 if (successPopup) {
@@ -929,4 +937,4 @@
         });
     </script>
 </body>
-</html>
+</html>"
