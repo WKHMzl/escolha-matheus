@@ -179,7 +179,7 @@
             border: 3px solid transparent; 
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
             position: relative;
-            overflow: visible; /* Changed from hidden to allow box-shadow to be fully visible */
+            overflow: visible; 
             cursor: pointer;
             backdrop-filter: blur(15px);
             min-height: 520px; 
@@ -187,20 +187,19 @@
             flex-direction: column;
         }
         
-        /* REMOVED animated border for hover and selected state */
         .funnel-card::before { 
-            display: none; /* Completely disable the ::before pseudo-element for now */
+            display: none; 
         }
 
         .funnel-card:hover {
             transform: translateY(-10px) scale(1.02); 
-            border-color: rgba(0, 255, 127, 0.5); /* Subtle green border on hover */
+            border-color: rgba(0, 255, 127, 0.5); 
             box-shadow: 0 20px 60px rgba(0,255,127,0.15), 0 0 15px rgba(0,191,255,0.1); 
         }
 
         .funnel-card.selected {
-            border: 3px solid #00ff7f; /* Clear, static green border */
-            background: rgba(0, 255, 127, 0.05); /* Subtle background tint */
+            border: 3px solid #00ff7f; 
+            background: rgba(0, 255, 127, 0.05); 
             transform: scale(1.03); 
             box-shadow: 0 15px 45px rgba(0, 255, 127, 0.25), 0 0 10px rgba(0,255,127,0.15); 
         }
@@ -856,20 +855,11 @@
             }
         }
         
-        function handleFunnelSelection(funnelCardElement) {
-            if (!funnelCardElement) return;
-
-            document.querySelectorAll('.funnel-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-
-            funnelCardElement.classList.add('selected');
-            selectedFunnelName = funnelCardElement.dataset.funnelName;
-            selectedFunnelCategory = funnelCardElement.dataset.category;
-
+        // Function to handle the WhatsApp redirection and popup
+        function redirectToWhatsApp() {
             if (selectedFunnelName && selectedFunnelCategory) {
                 const meuNumeroWhatsapp = "5511977506530";
-                const mensagem = `Aoba, nobre! Então vamos jogar pra frente o "${selectedFunnelName}" da categoria "${selectedFunnelCategory}".`;
+                const mensagem = `Olá! Tenho interesse no serviço de criação de funil para o Easychatia. Gostaria de mais informações sobre o "${selectedFunnelName}" da categoria "${selectedFunnelCategory}".`;
                 const whatsappLink = `https://api.whatsapp.com/send?phone=${meuNumeroWhatsapp}&text=${encodeURIComponent(mensagem)}`;
                 
                 if (successPopup) {
@@ -882,25 +872,46 @@
             } else {
                 // This case should ideally not be reached if selection logic is sound
                 // but good to have a fallback.
-                if(successPopup && successPopup.classList.contains('show')){
+                 if(successPopup && successPopup.classList.contains('show')){
                    // If popup is already shown due to a previous valid selection, don't alert.
                 } else {
-                   alert("Erro ao selecionar o funil. Tente novamente.");
+                   alert("Por favor, selecione um funil primeiro clicando no card.");
                 }
             }
         }
 
+        // Event listener for the "Selecionar Este Funil" buttons
         document.querySelectorAll('.select-btn').forEach(button => {
             button.addEventListener('click', function(event) {
-                event.stopPropagation(); 
+                event.stopPropagation(); // Prevent card click event from firing again
                 const funnelCard = this.closest('.funnel-card');
-                handleFunnelSelection(funnelCard);
+                 if (!funnelCard) return;
+
+                // Update selection state (visual and data)
+                document.querySelectorAll('.funnel-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                funnelCard.classList.add('selected');
+                selectedFunnelName = funnelCard.dataset.funnelName;
+                selectedFunnelCategory = funnelCard.dataset.category;
+                
+                // Now, trigger the redirection
+                redirectToWhatsApp();
             });
         });
         
+        // Event listener for clicking on the card itself (only for visual selection)
         document.querySelectorAll('.funnel-card').forEach(card => {
             card.addEventListener('click', function() {
-                handleFunnelSelection(this);
+                // If a card is clicked, it becomes the "selected" one visually
+                // but doesn't redirect yet.
+                document.querySelectorAll('.funnel-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                selectedFunnelName = this.dataset.funnelName;
+                selectedFunnelCategory = this.dataset.category;
+                // DO NOT redirect here. Redirection is handled by the button.
             });
         });
 
