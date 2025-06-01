@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easychatia - Funis de Vendas Estratégicos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden; 
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(0,255,127,0.1) 0%, rgba(0,191,255,0.1) 100%);
+            border-bottom: 2px solid rgba(0,255,127,0.3);
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(0,255,127,0.05)"/><circle cx="20" cy="80" r="0.5" fill="rgba(0,191,255,0.05)"/><circle cx="80" cy="20" r="0.75" fill="rgba(0,255,127,0.05)"/></svg>') repeat;
+            animation: floatBackground 30s infinite linear;
+            opacity: 0.5;
+        }
+
+        @keyframes floatBackground {
+            0% { background-position: 0 0; }
+            100% { background-position: 500px 500px; }
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem); 
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #00ff7f, #00bfff, #ff6b6b);
+            -webkit-background-clip: text;
+            -moz-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -moz-text-fill-color: transparent;
+            text-fill-color: transparent;
+            animation: glow 3s ease-in-out infinite alternate;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes glow {
+            from {    
+                text-shadow: 0 0 15px rgba(0,255,127,0.4), 0 0 25px rgba(0,191,255,0.3);
+                filter: hue-rotate(0deg);
+            }
+            to {    
+                text-shadow: 0 0 30px rgba(0,255,127,0.7), 0 0 50px rgba(0,191,255,0.5), 0 0 70px rgba(255,107,107,0.3);
+                filter: hue-rotate(45deg);
+            }
+        }
+
+        .header p {
+            font-size: clamp(1rem, 2.5vw, 1.4rem); 
+            opacity: 0.9;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+            padding: 0 15px; 
+        }
+
+        .categories-nav {
+            display: flex;
+            justify-content: center;
+            gap: clamp(10px, 2vw, 20px); 
+            margin: 40px 20px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: clamp(12px, 2vw, 15px) clamp(20px, 4vw, 30px); 
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(0,255,127,0.3);
+            border-radius: 50px; 
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            font-size: clamp(0.8rem, 1.8vw, 1rem); 
+        }
+
+        .category-btn i {
+            margin-right: 8px;
+        }
+
+        .category-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,255,127,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .category-btn:hover::before {
+            left: 100%;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            border-color: #00ff7f;
+            background: rgba(0,255,127,0.15);
+            transform: translateY(-5px) scale(1.05); 
+            box-shadow: 0 12px 35px rgba(0,255,127,0.35);
+        }
+
+        .category-section {
+            display: none;
+            padding: 40px clamp(10px, 3vw, 20px); 
+            max-width: 1600px;
+            margin: 0 auto;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category-section.active {
+            display: block;
+        }
+
+        .category-title {
+            text-align: center;
+            font-size: clamp(1.8rem, 4vw, 2.8rem); 
+            font-weight: 700;
+            margin-bottom: clamp(40px, 8vh, 60px); 
+            background: linear-gradient(135deg, #00ff7f, #00bfff);
+            -webkit-background-clip: text;
+            -moz-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -moz-text-fill-color: transparent;
+            text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .funnel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); 
+            gap: clamp(20px, 3vw, 40px); 
+            margin-bottom: 80px;
+        }
+
+        .funnel-card {
+            background: rgba(25,25,25,0.85); 
+            border-radius: 25px;
+            padding: clamp(20px, 3.5vw, 35px); 
+            border: 3px solid transparent;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            backdrop-filter: blur(15px);
+            min-height: 520px; 
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .funnel-card::before { 
+            content: '';
+            position: absolute;
+            top: -3px; left: -3px; right: -3px; bottom: -3px;
+            background: linear-gradient(120deg, #00ff7f, #00bfff, #ff6b6b, #ffd93d, #00ff7f);
+            background-size: 300% 300%; 
+            border-radius: 28px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            animation: borderFlow 6s linear infinite; 
+        }
+
+        @keyframes borderFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .funnel-card:hover::before,
+        .funnel-card.selected::before {
+            opacity: 1;
+        }
+
+        .funnel-card:hover {
+            transform: translateY(-10px) scale(1.02); 
+            box-shadow: 0 20px 60px rgba(0,255,127,0.2), 0 0 15px rgba(0,191,255,0.1); 
+        }
+
+        .funnel-card.selected {
+            background: rgba(0,255,127,0.1); 
+            transform: scale(1.03); 
+             box-shadow: 0 25px 70px rgba(0,255,127,0.3), 0 0 25px rgba(0,191,255,0.2);
+        }
+
+        .funnel-title {
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem); 
+            font-weight: 800;
+            margin-bottom: 15px; 
+            color: #00ff7f;
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .funnel-title i {
+            font-size: clamp(1.8rem, 3.5vw, 2.2rem); 
+            background: linear-gradient(135deg, #00ff7f, #00bfff);
+            -webkit-background-clip: text;
+            -moz-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -moz-text-fill-color: transparent;
+            text-fill-color: transparent;
+        }
+
+        .funnel-description {
+            font-size: clamp(0.85rem, 1.7vw, 1rem); 
+            line-height: 1.6; 
+            margin-bottom: 25px; 
+            opacity: 0.9;
+            color: #e0e0e0;
+            flex-grow: 1; 
+        }
+
+        .funnel-visual {
+            height: clamp(160px, 25vh, 220px); 
+            background: rgba(0,0,0,0.4); 
+            border-radius: 20px;
+            margin: 15px 0 25px 0; 
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,255,127,0.15); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+
+        .miro-diagram {
+            width: 90%;
+            height: auto; 
+            max-height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around; 
+            gap: clamp(5px, 1vw, 10px); 
+        }
+
+        .diagram-step {
+            background: rgba(0,255,127,0.08);
+            border: 2px solid #00ff7f;
+            border-radius: 12px; 
+            padding: clamp(8px, 1.2vw, 12px); 
+            min-width: clamp(60px, 9vw, 90px); 
+            min-height: clamp(45px, 7vh, 65px); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(0.7rem, 1.3vw, 0.85rem); 
+            font-weight: 600;
+            text-align: center;
+            position: relative;
+            animation: pulse 3s ease-in-out infinite;
+            color: #fff; 
+            line-height: 1.2; 
+        }
+        .diagram-step i.fa, .diagram-step i.fas { 
+            font-size: clamp(1rem, 1.8vw, 1.3rem); 
+            margin-bottom: 4px; 
+            color: #00bfff;
+        }
+
+
+        .diagram-step:nth-child(odd) {
+            animation-delay: 0.5s;
+        }
+
+        .diagram-step.main-step {
+            background: linear-gradient(135deg, rgba(0,255,127,0.2), rgba(0,191,255,0.2));
+            border-color: #00bfff;
+            transform: scale(1.1);
+        }
+
+        .diagram-arrow {
+            color: #00bfff;
+            font-size: clamp(1.2rem, 2vw, 1.8rem); 
+            animation: bounce 2s infinite;
+            align-self: center; 
+        }
+
+        @keyframes pulse {
+            0%, 100% {    
+                box-shadow: 0 0 0 0 rgba(0,255,127,0.5);
+                transform: scale(1);
+            }
+            50% {    
+                box-shadow: 0 0 0 8px rgba(0,255,127,0); 
+                transform: scale(1.03);
+            }
+        }
+         .diagram-step.main-step.pulse { 
+            animation-name: pulseMain;
+        }
+        @keyframes pulseMain {
+            0%, 100% {    
+                box-shadow: 0 0 0 0 rgba(0,191,255,0.5);
+                transform: scale(1.1);
+            }
+            50% {    
+                box-shadow: 0 0 0 8px rgba(0,191,255,0); 
+                transform: scale(1.13);
+            }
+        }
+
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(0); }
+            40% { transform: translateX(6px); } 
+            60% { transform: translateX(3px); } 
+        }
+
+        .funnel-features {
+            list-style: none;
+            margin-bottom: 25px; 
+            padding-left: 0; 
+        }
+
+        .funnel-features li {
+            padding: 8px 0; 
+            display: flex;
+            align-items: center;
+            gap: 12px; 
+            font-size: clamp(0.8rem, 1.6vw, 0.95rem); 
+            transition: all 0.3s ease;
+        }
+
+        .funnel-features li:hover {
+            transform: translateX(8px); 
+            color: #00ff7f;
+        }
+        .funnel-features li:hover i {
+            color: #00ff7f; 
+        }
+
+        .funnel-features i {
+            color: #00bfff;
+            width: 22px; 
+            font-size: clamp(0.9rem, 1.7vw, 1.1rem); 
+            text-align: center; 
+        }
+
+        .select-btn {
+            width: 100%;
+            padding: clamp(12px, 2.2vw, 18px); 
+            background: linear-gradient(135deg, #00ff7f, #00bfff);
+            border: none;
+            border-radius: 12px; 
+            color: #0a0a0a; 
+            font-weight: 700; 
+            font-size: clamp(0.9rem, 1.8vw, 1.1rem); 
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px; 
+            position: relative;
+            overflow: hidden;
+            margin-top: auto; 
+        }
+
+        .select-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .select-btn:hover::before {
+            left: 100%;
+        }
+
+        .select-btn:hover {
+            transform: translateY(-4px) scale(1.02); 
+            box-shadow: 0 12px 25px rgba(0,255,127,0.35), 0 4px 12px rgba(0,191,255,0.25);
+        }
+
+        .send-section {
+            position: fixed;
+            bottom: 20px; 
+            right: 20px; 
+            left: 20px; 
+            z-index: 1000;
+            text-align: center; 
+        }
+
+        .send-btn {
+            padding: clamp(15px, 2.5vw, 22px) clamp(20px, 3.5vw, 30px); 
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700; 
+            font-size: clamp(1rem, 2vw, 1.2rem); 
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center; 
+            gap: 12px; 
+            opacity: 0;
+            transform: translateY(100px) scale(0.8); 
+            box-shadow: 0 8px 25px rgba(37,211,102,0.3);
+            visibility: hidden; 
+            width: auto; 
+            max-width: 100%; 
+        }
+        
+        @media (min-width: 769px) { 
+            .send-section {
+                left: auto; 
+                text-align: right; 
+            }
+            .send-btn {
+                display: flex; 
+            }
+        }
+
+
+        .send-btn.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            visibility: visible; 
+        }
+
+        .send-btn:hover {
+            transform: translateY(-7px) scale(1.08); 
+            box-shadow: 0 18px 35px rgba(37,211,102,0.45);
+        }
+
+        .send-btn i {
+            font-size: clamp(1.3rem, 2.2vw, 1.6rem); 
+            animation: shake 2s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            10%, 30%, 50%, 70%, 90% { transform: rotate(8deg); }
+            20%, 40%, 60%, 80% { transform: rotate(-8deg); }
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3.5px; 
+            height: 3.5px;
+            background: rgba(0,255,127,0.5); 
+            border-radius: 50%;
+            animation: floatParticle 15s infinite linear; 
+        }
+
+        .particle:nth-child(2n) {
+            background: rgba(0,191,255,0.5);
+            animation-duration: 18s;
+            width: 2.5px; height: 2.5px;
+        }
+
+        .particle:nth-child(3n) {
+            background: rgba(255,107,107,0.4); 
+            animation-duration: 12s;
+            width: 4.5px; height: 4.5px;
+        }
+         .particle:nth-child(4n) {
+            background: rgba(255,217,61,0.5); 
+            animation-duration: 20s;
+            width: 3px; height: 3px;
+        }
+
+
+        @keyframes floatParticle { 
+            0% {    
+                transform: translateY(100vh) rotate(0deg) translateX(0vw) scale(0.5);
+                opacity: 0;
+            }
+            10% { opacity: 0.7; transform: scale(1); } 
+            90% { opacity: 0.7; transform: scale(1); } 
+            100% {    
+                transform: translateY(-100px) rotate(720deg) translateX(calc(50vw * (var(--random-x) - 0.5))) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        .success-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.7); 
+            background: rgba(10,10,10,0.97); 
+            padding: clamp(25px, 4vw, 40px); 
+            border-radius: 20px; 
+            border: 2px solid #00ff7f; 
+            text-align: center;
+            z-index: 2000;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+            opacity: 0;
+            visibility: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 40px rgba(0,255,127,0.25); 
+            width: clamp(280px, 80vw, 450px); 
+        }
+
+        .success-popup.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .success-popup h3 {
+            font-size: clamp(1.3rem, 2.8vw, 1.8rem); 
+            margin-bottom: 15px; 
+            color: #00ff7f;
+        }
+        .success-popup p {
+            font-size: clamp(0.85rem, 1.7vw, 1rem);
+            margin-bottom: 25px;
+            color: #e0e0e0;
+        }
+        .success-popup .close-popup-btn {
+            padding: 10px 20px; 
+            background: linear-gradient(135deg, #00ff7f, #00bfff);
+            border: none;
+            border-radius: 8px; 
+            color: #0a0a0a;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .success-popup .close-popup-btn:hover {
+            background: linear-gradient(135deg, #00e673, #00aee6);
+        }
+
+
+        /* Responsive Design Adjustments */
+        @media (max-width: 768px) {
+            .funnel-grid {
+                grid-template-columns: 1fr; 
+                gap: 25px; 
+                padding: 20px 15px; 
+            }
+            .funnel-card {
+                min-height: auto; 
+            }
+            .miro-diagram {
+                flex-direction: column; 
+                gap: 12px; 
+            }
+            .diagram-arrow {
+                transform: rotate(90deg); 
+                animation: bounceVertical 2s infinite;
+            }
+            @keyframes bounceVertical { 
+                0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(90deg); }
+                40% { transform: translateY(6px) rotate(90deg); }
+                60% { transform: translateY(3px) rotate(90deg); }
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 { font-size: 1.8rem; }
+            .header p { font-size: 0.85rem; padding: 0 10px;}
+            .category-btn { padding: 8px 12px; font-size: 0.75rem; }
+            .category-title { font-size: 1.5rem; margin-bottom: 30px; }
+            .funnel-title { font-size: 1.1rem; }
+            .funnel-title i { font-size: 1.5rem; }
+            .funnel-description { font-size: 0.8rem; }
+            .select-btn { font-size: 0.85rem; padding: 10px; }
+            .send-btn { font-size: 0.9rem; padding: 12px 18px; }
+            .send-btn i { font-size: 1.1rem; }
+            .success-popup h3 { font-size: 1.2rem; }
+            .success-popup p { font-size: 0.8rem; }
+            .diagram-step {
+                min-width: 55px;
+                min-height: 40px;
+                font-size: 0.65rem;
+            }
+            .diagram-step i.fa, .diagram-step i.fas {
+                font-size: 0.9rem;
+            }
+            .diagram-arrow {
+                font-size: 1rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="floating-particles" id="particle-container">
+        </div>
+
+    <header class="header">
+        <h1>EASYCHATIA</h1>
+        <p>Funis de Vendas Estratégicos para Alavancar suas Assinaturas</p>
+    </header>
+
+    <nav class="categories-nav">
+        <a href="#" class="category-btn active" onclick="showCategory('leads', this)">
+            <i class="fas fa-users"></i> Funis de Leads
+        </a>
+        <a href="#" class="category-btn" onclick="showCategory('vendas', this)">
+            <i class="fas fa-chart-line"></i> Funis de Vendas
+        </a>
+        <a href="#" class="category-btn" onclick="showCategory('eventos', this)">
+            <i class="fas fa-calendar-alt"></i> Funis de Eventos
+        </a>
+        <a href="#" class="category-btn" onclick="showCategory('highticket', this)">
+            <i class="fas fa-crown"></i> Funis de Ticket Alto
+        </a>
+    </nav>
+
+    <section class="category-section active" id="leads">
+        <h2 class="category-title">FUNIS DE LEADS</h2>
+        <div class="funnel-grid">
+            <div class="funnel-card" data-funnel-name="Funil de Isca Digital" data-category="Leads">
+                <div class="funnel-title"><i class="fas fa-magnet"></i>Funil de Isca Digital</div>
+                <div class="funnel-description">Atraia o público-alvo com um material digital de alto valor percebido (e-book, template, checklist, etc.) oferecido gratuitamente. Capture contatos e inicie o relacionamento através de uma sequência de comunicação automatizada, apresentando gradualmente a solução principal (Easychatia).</div>
+                <div class="funnel-visual">
+                    <div class="miro-diagram">
+                        <div class="diagram-step"><i class="fas fa-gift"></i>MATERIAL GRÁTIS</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step main-step"><i class="fas fa-envelope-open-text"></i>CAPTURA & NUTRIÇÃO</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step"><i class="fas fa-bullseye"></i>OFERTA FUTURA</div>
+                    </div>
+                </div>
+                <ul class="funnel-features">
+                    <li><i class="fas fa-check-circle"></i> Gera volume de leads qualificados</li>
+                    <li><i class="fas fa-check-circle"></i> Baixo custo de aquisição por lead</li>
+                    <li><i class="fas fa-check-circle"></i> Constrói lista de e-mails segmentada</li>
+                    <li><i class="fas fa-check-circle"></i> Educa o mercado sobre sua solução</li>
+                    <li><i class="fas fa-check-circle"></i> Prepara leads para ofertas futuras</li>
+                </ul>
+                <button class="select-btn">Selecionar Este Funil</button>
+            </div>
+            <div class="funnel-card" data-funnel-name="Funil de Newsletter" data-category="Leads">
+                <div class="funnel-title"><i class="fas fa-newspaper"></i>Funil de Newsletter</div>
+                <div class="funnel-description">Construa autoridade e um relacionamento de longo prazo com seu público através do envio periódico de conteúdo relevante e exclusivo. As ofertas do Easychatia são integradas de forma natural, nutrindo os leads até a conversão.</div>
+                <div class="funnel-visual">
+                    <div class="miro-diagram">
+                        <div class="diagram-step"><i class="fas fa-user-plus"></i>INSCRIÇÃO</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step main-step"><i class="fas fa-lightbulb"></i>CONTEÚDO DE VALOR</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step"><i class="fas fa-handshake"></i>RELACIONAMENTO & OFERTA</div>
+                    </div>
+                </div>
+                <ul class="funnel-features">
+                    <li><i class="fas fa-check-circle"></i> Cria audiência fiel e engajada</li>
+                    <li><i class="fas fa-check-circle"></i> Posição de autoridade no nicho</li>
+                    <li><i class="fas fa-check-circle"></i> Canal direto de comunicação e vendas</li>
+                    <li><i class="fas fa-check-circle"></i> Nutrição constante de leads</li>
+                    <li><i class="fas fa-check-circle"></i> Ideal para manter Easychatia em evidência</li>
+                </ul>
+                <button class="select-btn">Selecionar Este Funil</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="category-section" id="vendas">
+        <h2 class="category-title">FUNIS DE VENDAS</h2>
+        <div class="funnel-grid">
+             <div class="funnel-card" data-funnel-name="Funil de Quiz" data-category="Vendas">
+                <div class="funnel-title"><i class="fas fa-question-circle"></i>Funil de Quiz</div>
+                <div class="funnel-description">Engaje e qualifique leads através de um questionário interativo que identifica suas necessidades específicas. Com base nas respostas, direcione-os para a solução Easychatia mais adequada, aumentando as chances de conversão.</div>
+                <div class="funnel-visual">
+                    <div class="miro-diagram">
+                        <div class="diagram-step"><i class="fas fa-tasks"></i>QUIZ INTERATIVO</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step main-step"><i class="fas fa-cogs"></i>RESULTADO & SEGMENTAÇÃO</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step"><i class="fas fa-desktop"></i>OFERTA DIRECIONADA</div>
+                    </div>
+                </div>
+                <ul class="funnel-features">
+                    <li><i class="fas fa-check-circle"></i> Alta taxa de engajamento</li>
+                    <li><i class="fas fa-check-circle"></i> Coleta dados valiosos dos leads</li>
+                    <li><i class="fas fa-check-circle"></i> Segmentação precisa do público</li>
+                    <li><i class="fas fa-check-circle"></i> Ofertas personalizadas e mais eficazes</li>
+                    <li><i class="fas fa-check-circle"></i> Ideal para entender dores e desejos</li>
+                </ul>
+                <button class="select-btn">Selecionar Este Funil</button>
+            </div>
+            <div class="funnel-card" data-funnel-name="Funil de Upsell e Downsell" data-category="Vendas">
+                <div class="funnel-title"><i class="fas fa-arrow-alt-circle-up"></i>Funil de Upsell e Downsell</div>
+                <div class="funnel-description">Maximize o valor de cada cliente no momento da compra de um plano Easychatia. Ofereça produtos ou serviços complementares de maior valor (upsell) ou alternativas de menor valor (downsell) para garantir a conversão e aumentar o ticket médio.</div>
+                <div class="funnel-visual">
+                     <div class="miro-diagram">
+                        <div class="diagram-step"><i class="fas fa-shopping-cart"></i>COMPRA INICIAL</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step main-step"><i class="fas fa-plus-circle"></i>OFERTA UPSELL</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step"><i class="fas fa-tags"></i>OFERTA DOWNSELL</div>
+                    </div>
+                </div>
+                <ul class="funnel-features">
+                    <li><i class="fas fa-check-circle"></i> Aumenta o ticket médio por cliente</li>
+                    <li><i class="fas fa-check-circle"></i> Maximiza o Lucro Por Cliente (LTV)</li>
+                    <li><i class="fas fa-check-circle"></i> Melhora a experiência com mais valor</li>
+                    <li><i class="fas fa-check-circle"></i> Recupera vendas que seriam perdidas</li>
+                    <li><i class="fas fa-check-circle"></i> Requer ofertas bem estruturadas</li>
+                </ul>
+                <button class="select-btn">Selecionar Este Funil</button>
+            </div>
+            <div class="funnel-card" data-funnel-name="Funil Tripwire" data-category="Vendas">
+                <div class="funnel-title"><i class="fas fa-bolt"></i>Funil Tripwire</div>
+                <div class="funnel-description">Transforme leads em clientes rapidamente com uma oferta de baixo custo e alto valor percebido, quebrando a barreira inicial de compra. Em seguida, apresente os planos principais do Easychatia como a progressão natural.</div>
+                <div class="funnel-visual">
+                    <div class="miro-diagram">
+                        <div class="diagram-step"><i class="fas fa-dollar-sign"></i>OFERTA IRRESISTÍVEL</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step main-step"><i class="fas fa-credit-card"></i>PRIMEIRA COMPRA</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step"><i class="fas fa-level-up-alt"></i>OFERTA PRINCIPAL</div>
+                    </div>
+                </div>
+                <ul class="funnel-features">
+                    <li><i class="fas fa-check-circle"></i> Converte leads em clientes rapidamente</li>
+                    <li><i class="fas fa-check-circle"></i> Valida o público comprador</li>
+                    <li><i class="fas fa-check-circle"></i> Custo baixo para adquirir clientes</li>
+                    <li><i class="fas fa-check-circle"></i> Facilita a venda de produtos mais caros</li>
+                    <li><i class="fas fa-check-circle"></i> Ideal para aquecer a lista de clientes</li>
+                </ul>
+                <button class="select-btn">Selecionar Este Funil</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="category-section" id="eventos">
+        <h2 class="category-title">FUNIS DE EVENTOS</h2>
+        <div class="funnel-grid">
+            <div class="funnel-card" data-funnel-name="Funil de Webinar" data-category="Eventos">
+                <div class="funnel-title"><i class="fas fa-chalkboard-teacher"></i>Funil de Webinar</div>
+                <div class="funnel-description">Conduza uma apresentação online, ao vivo ou gravada, para educar sua audiência sobre um tema relevante e demonstrar como o Easychatia pode solucionar seus problemas. Ao final, faça uma oferta especial para os participantes.</div>
+                <div class="funnel-visual">
+                    <div class="miro-diagram">
+                        <div class="diagram-step"><i class="fas fa-ticket-alt"></i>REGISTRO</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step main-step"><i class="fas fa-video"></i>APRESENTAÇÃO ONLINE</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step"><i class="fas fa-gift"></i>OFERTA ESPECIAL</div>
+                    </div>
+                </div>
+                <ul class="funnel-features">
+                    <li><i class="fas fa-check-circle"></i> Gera autoridade e confiança</li>
+                    <li><i class="fas fa-check-circle"></i> Interação direta com o público (se ao vivo)</li>
+                    <li><i class="fas fa-check-circle"></i> Demonstração prática da solução</li>
+                    <li><i class="fas fa-check-circle"></i> Alta conversão devido ao engajamento</li>
+                    <li><i class="fas fa-check-circle"></i> Ideal para produtos de ticket médio/alto</li>
+                </ul>
+                <button class="select-btn">Selecionar Este Funil</button>
+            </div>
+            <div class="funnel-card" data-funnel-name="Funil de Webinar Pago" data-category="Eventos">
+                <div class="funnel-title"><i class="fas fa-dollar-sign"></i><i class="fas fa-chalkboard-teacher ml-2"></i>Funil de Webinar Pago</div>
+                <div class="funnel-description">Similar ao funil de webinar, mas com uma taxa de inscrição. Isso qualifica intensamente os participantes, atraindo apenas os mais comprometidos, e aumenta o valor percebido do evento e da oferta final do Easychatia.</div>
+                <div class="funnel-visual">
+                    <div class="miro-diagram">
+                        <div class="diagram-step"><i class="fas fa-cash-register"></i>INSCRIÇÃO PAGA</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step main-step"><i class="fas fa-star"></i>CONTEÚDO PREMIUM</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step"><i class="fas fa-gem"></i>OFERTA EXCLUSIVA VIP</div>
+                    </div>
+                </div>
+                <ul class="funnel-features">
+                    <li><i class="fas fa-check-circle"></i> Leads extremamente qualificados</li>
+                    <li><i class="fas fa-check-circle"></i> Maior comprometimento dos participantes</li>
+                    <li><i class="fas fa-check-circle"></i> Valor percebido do evento elevado</li>
+                    <li><i class="fas fa-check-circle"></i> Taxas de conversão na oferta final mais altas</li>
+                    <li><i class="fas fa-check-circle"></i> Ideal para ofertas de maior valor agregado</li>
+                </ul>
+                <button class="select-btn">Selecionar Este Funil</button>
+            </div>
+            <div class="funnel-card" data-funnel-name="Funil de Lançamento (Exposição e Performance)" data-category="Eventos">
+                <div class="funnel-title"><i class="fas fa-rocket"></i>Funil de Lançamento</div>
+                <div class="funnel-description">Crie um evento de curta duração (geralmente alguns dias) com entrega de conteúdo de alto valor, gerando antecipação e desejo pela solução Easychatia. As vendas são abertas por tempo limitado ao final do evento.</div>
+                <div class="funnel-visual">
+                    <div class="miro-diagram">
+                        <div class="diagram-step"><i class="fas fa-bullhorn"></i>CAPTURA & AQUECIMENTO</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step main-step"><i class="fas fa-graduation-cap"></i>SÉRIE DE CONTEÚDOS</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step"><i class="fas fa-shopping-bag"></i>ABERTURA DE VENDAS</div>
+                    </div>
+                </div>
+                <ul class="funnel-features">
+                    <li><i class="fas fa-check-circle"></i> Gera picos de vendas expressivos</li>
+                    <li><i class="fas fa-check-circle"></i> Cria forte senso de urgência e comunidade</li>
+                    <li><i class="fas fa-check-circle"></i> Educa profundamente o público</li>
+                    <li><i class="fas fa-check-circle"></i> Ideal para lançar novos produtos/planos</li>
+                    <li><i class="fas fa-check-circle"></i> Constrói momentum e autoridade</li>
+                </ul>
+                <button class="select-btn">Selecionar Este Funil</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="category-section" id="highticket">
+        <h2 class="category-title">FUNIS DE TICKET ALTO</h2>
+        <div class="funnel-grid">
+             <div class="funnel-card" data-funnel-name="Funil de Aplicação" data-category="Ticket Alto">
+                <div class="funnel-title"><i class="fas fa-user-tie"></i>Funil de Aplicação</div>
+                <div class="funnel-description">Qualifique leads para produtos ou serviços Easychatia de alto valor. Os interessados preenchem um formulário detalhado; apenas os mais alinhados são contatados para uma conversa estratégica e fechamento.</div>
+                <div class="funnel-visual">
+                    <div class="miro-diagram">
+                        <div class="diagram-step"><i class="fas fa-file-signature"></i>FORMULÁRIO DE APLICAÇÃO</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step main-step"><i class="fas fa-search-dollar"></i>ANÁLISE & QUALIFICAÇÃO</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step"><i class="fas fa-handshake"></i>SESSÃO ESTRATÉGICA</div>
+                    </div>
+                </div>
+                <ul class="funnel-features">
+                    <li><i class="fas fa-check-circle"></i> Filtra leads com precisão</li>
+                    <li><i class="fas fa-check-circle"></i> Otimiza o tempo da equipe de vendas</li>
+                    <li><i class="fas fa-check-circle"></i> Ideal para vendas consultivas e complexas</li>
+                    <li><i class="fas fa-check-circle"></i> Atrai clientes mais comprometidos</li>
+                    <li><i class="fas fa-check-circle"></i> Foco em soluções de alto impacto e valor</li>
+                </ul>
+                <button class="select-btn">Selecionar Este Funil</button>
+            </div>
+            <div class="funnel-card" data-funnel-name="Empilhamento de Funis" data-category="Ticket Alto">
+                <div class="funnel-title"><i class="fas fa-layer-group"></i>Empilhamento de Funis</div>
+                <div class="funnel-description">Uma meta-estratégia que interliga diversos funis (isca, vendas, eventos) para conduzir o cliente por uma jornada de valor crescente, culminando em ofertas Easychatia de alto ticket e maximizando o LTV.</div>
+                <div class="funnel-visual">
+                    <div class="miro-diagram">
+                        <div class="diagram-step"><i class="fas fa-sitemap"></i>MÚLTIPLOS FUNIS</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step main-step"><i class="fas fa-chart-network"></i>JORNADA DO CLIENTE</div>
+                        <i class="fas fa-arrow-right diagram-arrow"></i>
+                        <div class="diagram-step"><i class="fas fa-gem"></i>OFERTA HIGH-TICKET</div>
+                    </div>
+                </div>
+                <ul class="funnel-features">
+                    <li><i class="fas fa-check-circle"></i> Maximiza o valor total por cliente (LTV)</li>
+                    <li><i class="fas fa-check-circle"></i> Cria múltiplos pontos de conversão</li>
+                    <li><i class="fas fa-check-circle"></i> Nutrição contínua e progressiva</li>
+                    <li><i class="fas fa-check-circle"></i> Estratégia robusta e de longo prazo</li>
+                    <li><i class="fas fa-check-circle"></i> Requer planejamento e automação avançada</li>
+                </ul>
+                <button class="select-btn">Selecionar Este Funil</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="send-section">
+        <a href="#" id="send-whatsapp-btn" class="send-btn" target="_blank"> 
+            <i class="fab fa-whatsapp"></i> Enviar Seleção
+        </a>
+    </div>
+
+    <div class="success-popup" id="successPopup">
+        <h3>Seleção Enviada!</h3>
+        <p>Seu funil escolhido foi enviado com sucesso. Entraremos em contato em breve!</p>
+        <button class="close-popup-btn" onclick="closePopup()">Fechar</button>
+    </div>
+
+    <script>
+        let selectedFunnelName = null;
+        let selectedFunnelCategory = null;
+        const sendWhatsappBtn = document.getElementById('send-whatsapp-btn');
+        const successPopup = document.getElementById('successPopup');
+
+        const particleContainer = document.getElementById('particle-container');
+        const numParticles = 25; 
+        if (particleContainer) { 
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 20 + 80}vh`; 
+                const delay = Math.random() * 15; 
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.setProperty('--random-x', Math.random()); 
+                particleContainer.appendChild(particle);
+            }
+        }
+
+        function showCategory(categoryId, clickedButton) {
+            document.querySelectorAll('.category-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            const activeSection = document.getElementById(categoryId);
+            if (activeSection) {
+                 activeSection.classList.add('active');
+            }
+           
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+        }
+
+        document.querySelectorAll('.select-btn').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.stopPropagation(); 
+                const funnelCard = this.closest('.funnel-card');
+                if (!funnelCard) return;
+
+                document.querySelectorAll('.funnel-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+
+                funnelCard.classList.add('selected');
+                selectedFunnelName = funnelCard.dataset.funnelName;
+                selectedFunnelCategory = funnelCard.dataset.category;
+
+                if (sendWhatsappBtn) {
+                    sendWhatsappBtn.classList.add('visible');
+                }
+            });
+        });
+        
+        document.querySelectorAll('.funnel-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.funnel-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                selectedFunnelName = this.dataset.funnelName;
+                selectedFunnelCategory = this.dataset.category; // Make sure category is captured
+                if (sendWhatsappBtn) {
+                    sendWhatsappBtn.classList.add('visible');
+                }
+            });
+        });
+
+
+        if (sendWhatsappBtn) {
+            sendWhatsappBtn.addEventListener('click', function(event) {
+                if (selectedFunnelName && selectedFunnelCategory) { 
+                    const meuNumeroWhatsapp = "5511977506530"; 
+                    const mensagem = `Aoba, nobre! Então bora jogar pra frente o "${selectedFunnelName}" da categoria "${selectedFunnelCategory}".`;
+                    const whatsappLink = `https://api.whatsapp.com/send?phone=${meuNumeroWhatsapp}&text=${encodeURIComponent(mensagem)}`;
+                    
+                    this.href = whatsappLink; 
+
+                    if (successPopup) {
+                        setTimeout(() => {
+                            successPopup.classList.add('show');
+                        }, 300);
+                    }
+                } else {
+                    event.preventDefault(); 
+                    alert("Por favor, selecione um funil primeiro.");
+                }
+            });
+        }
+
+        function closePopup() {
+            if (successPopup) {
+                successPopup.classList.remove('show');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Updated to match new category ID 'leads'
+            const initialCategoryButton = document.querySelector('.category-btn[onclick*="leads"]');
+            if (initialCategoryButton) {
+                 showCategory('leads', initialCategoryButton);
+            }
+        });
+    </script>
+</body>
+</html>
